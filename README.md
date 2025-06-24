@@ -308,14 +308,7 @@ Kerberos can be enabled for SMB through the command line using the existing Kerb
 
 2. Open TrueNAS cli and configure smb_options
 ```
-Warning: the supported mechanisms for making configuration changes
-are the TrueNAS WebUI, CLI, and API exclusively. ALL OTHERS ARE
-NOT SUPPORTED AND WILL RESULT IN UNDEFINED BEHAVIOR AND MAY
-RESULT IN SYSTEM FAILURE.
-
-Welcome to TrueNAS
-Last login: Tue Jun 24 15:18:47 2025 from 2403:580f:5827:0:16:5b4f:aa4a:b51f
-root@fileserver[~]# cli
+root@mytruenas[~]# cli
 
 [mytruenas]> service smb
 [mytruenas] service smb> config
