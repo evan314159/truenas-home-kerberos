@@ -136,9 +136,9 @@ kadmin.local: addprinc -randkey cifs/mytruenas.myhome.lan@MYHOME.LAN
 
 Export keys to the keytab, stored in /var/lib/krb5kdc which is available on the host at apps/krb5kdc/data
 
-kadmin.local: ktadd -k /var/lib/krb5kdc/mytruenas.keytab host/mytruenas.mytruenas.myhome.lan@MYHOME.LAN
-kadmin.local: ktadd -k /var/lib/krb5kdc/mytruenas.keytab nfs/mytruenas.mytruenas.myhome.lan@MYHOME.LAN
-kadmin.local: ktadd -k /var/lib/krb5kdc/mytruenas.keytab cifs/mytruenas.mytruenas.myhome.lan@MYHOME.LAN
+kadmin.local: ktadd -k /var/lib/krb5kdc/mytruenas.keytab host/mytruenas.myhome.lan@MYHOME.LAN
+kadmin.local: ktadd -k /var/lib/krb5kdc/mytruenas.keytab nfs/mytruenas.myhome.lan@MYHOME.LAN
+kadmin.local: ktadd -k /var/lib/krb5kdc/mytruenas.keytab cifs/mytruenas.myhome.lan@MYHOME.LAN
 ```
 Note: every time a key is exported the key version number increments. The installed keytab must have the latest version of the keys.
 
@@ -146,7 +146,7 @@ Note: every time a key is exported the key version number increments. The instal
 ```
 Create the host principal:
 kadmin.local: addprinc -randkey host/mylinux.myhome.lan@MYHOME.LAN
-kadmin.local: ktadd -k /var/lib/krb5kdc/mylinux.keytab host/mytruenas.mytruenas.myhome.lan@MYHOME.LAN
+kadmin.local: ktadd -k /var/lib/krb5kdc/mylinux.keytab host/mylinux.myhome.lan@MYHOME.LAN
 ```
 6. Macs do not need a keytab to act as a NFS or SMB client.
 
