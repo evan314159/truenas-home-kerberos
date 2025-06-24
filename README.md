@@ -201,7 +201,7 @@ Click Save
 ```
 Enabled Protocols: NFSv4
 NFSv4 DNS Domain: myhome.lan
-Require Kerbers for NFSv4: checked
+Require Kerberos for NFSv4: checked
 Allow non-root mount: checked (especialy for Mac clients)
 Manage Groups Server-side: checked
 ```
@@ -211,7 +211,7 @@ KRB5: Kerberos authentication only
 KRB5I: Kerberos authentication with Kerberos integrity (packets cannot be changed in transit but are not encrypted in transit)
 KRB5P: Kerberos authentication with Kerberos encryption (packets cannot be changed in transit and are encrypted in transit)
 ```
-The Kerberos security levels enabled here needs to match the client mount option (sec=krb5|krb5i|krb5p).
+The Kerberos security level set on the client mount option (sec=krb5|krb5i|krb5p) needs to match an enabled Kerberos security level on TrueNAS.  The default (none selected) is all Kerberos security levels are allowed. sec=sys is disabled by global option "Require Kerberos fo NFSv4".
 
 ### Step 6: Configure a Mac client
 1. Create /etc/krb5.conf permissions root:wheel 0644 to contain:
