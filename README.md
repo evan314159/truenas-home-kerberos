@@ -51,10 +51,10 @@ This document will use:
 * TrueNAS server: mytruenas.myhome.lan
 * User: myuser
 
-I used TailScale and MagicDNS which provides for all our requirements and ensures that I can consistently access the NFSv4 share while remote.  If TailScale is used, the settings will be similar to:
+I used TailScale and MagicDNS which meet all requirements and enable consistent access to the NFSv4 share even while remote.  If TailScale is used, the settings will be similar to:
 
-* DNS domain: tailabc123.ts.net
-* Kerberos realm: TAILABC123.TS.NET
+* DNS domain: tailabc123.ts.net      # Tailnet name
+* Kerberos realm: TAILABC123.TS.NET  # Tailnet name in capitals
 * TrueNAS server: mytruenas.tailabc123.ts.net
 
 A standalone internal DNS can be used instead, and maybe even hosts files in a small enough environment.  Setup of an internal DNS service or TailScale are outside the scope of this document.
@@ -357,7 +357,7 @@ root@fileserver[~]# cli
 |                 | kerberos encryption types = strong      |
 ```
 
-If there are already have non-standard smb_options these will also need to be included in the update smb_options. See smb.conf(5) but also please be aware that TrueNAS has restricted access to most settings for a reason.
+If there are already have non-standard smb_options these will also need to be included in the updated smb_options. See smb.conf(5), but also be aware that TrueNAS has restricted access to most settings for a reason.
 
 3. Mount the share. Use klist to the Kerberos ticket that was obtained for the share.
 
@@ -369,11 +369,11 @@ I am snap-shotting the Kerberos apps/krb5kdc/data directory have tested roll-bac
 
 Troubleshooting
 ===============
-* Use basic network troubleshooting: is the host reachable, do forwards and reverse DNS work.
+* Basic network troubleshooting: is the TrueNAS server reachable, do forwards and reverse DNS work
+* Is the Kerberos container running, and are there errors in the log: docker logs ix-krb5kdc-krb5kdc-1
 * Is there a Kerberos Ticket Granting Ticket: klist
 * Are there service tickets for NFS or SMB: klist
 * Linux clients require the keytab in /etc/krb5.keytab, permissions root:root 0600.
-* These settings do not enable encryption
 
 Final Thoughts
 ==============
