@@ -330,7 +330,7 @@ If there are already have non-standard smb_options these will also need to be in
 4. Access to the share will remain available via NTLMv2 the user is disabled for SMB or NTLMv2 is disabled via smb_options.
 
 ## Backup and Recovery
-I am snap-shotting the Kerberos apps/krb5kdc/data directory, and then backing up the snapshots as per usual. Rollbacks will cause issues if the Kerberos database has changed between snapshots, e.g. due to key changes.  The Kerberos server can be reset by deleting the contents of the data dataset and restarting the container.
+I am snapshotting the Kerberos apps/krb5kdc/data directory, and then backing up the snapshots as per usual. Rollbacks will cause issues if the Kerberos database has changed between snapshots, e.g. due to key changes.  The Kerberos server can be reset by deleting the contents of the data dataset and restarting the container.
 
 ## Troubleshooting
 * Basic network troubleshooting: is the TrueNAS server reachable, do forwards and reverse DNS work
