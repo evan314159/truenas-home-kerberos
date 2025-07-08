@@ -206,11 +206,10 @@ Allow non-root mount: checked (especialy for Mac clients)
 Manage Groups Server-side: checked
 ```
 3. Setup an NFS share as desired.  Under Advanced Options, Kerberos security levels can be configured.  The Kerberos security levels are:
-```
-krb5: Kerberos authentication only
-krb5i: Kerberos authentication with Kerberos integrity (packets cannot be changed in transit but are not encrypted in transit)
-krb5p: Kerberos authentication with Kerberos encryption and integrity (packets cannot be changed in transit and are encrypted in transit)
-```
+* krb5: Kerberos authentication only
+* krb5i: Kerberos authentication with Kerberos integrity (packets cannot be changed in transit but are not encrypted in transit)
+* krb5p: Kerberos authentication with Kerberos encryption and integrity (packets cannot be changed in transit and are encrypted in transit)
+
 The Kerberos security level set on the client mount option (sec=krb5|krb5i|krb5p) needs to match an enabled Kerberos security level on TrueNAS.  The default (none selected) is all Kerberos security levels are allowed. sec=sys is disabled by global option "Require Kerberos fo NFSv4".  krb5p is recommended for NFS over any shared network to provide data encryption and ensure integrity, or otherwise at least krb5i is recommended to provide integrity.
 
 ### Step 6: Configure a Mac client
