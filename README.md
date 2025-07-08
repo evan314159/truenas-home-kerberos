@@ -6,7 +6,7 @@ I wanted to use NFSv4 at home between TrueNAS and my Mac.
 
 NFSv4 authentication is designed for enterprise environments.  The NFSv4 "simple / low infrastructure" system authentication mode (sec=sys) requires user ID numbers (uids) to match between TrueNAS and clients. It was designed for centrally-managed IT environments from decades ago. It is hard for an end user to implement themselves across multiple different platforms (TrueNAS, Mac, Linux each have different uid schemes).  It was also designed for a security model from decades ago -- any client can report they are any user ID number.
 
-NFSv4 also supports Kerberos authentication (sec=krb5). Kerberos is a centralised authentication system that provides single sign-on for many protocols, including NFSv4 and SMB. It's how Windows devices seamlessly authenticate to SMB shares and other services in enterprise Windows environments. With Kerberos, NFSv4 does not require user IDs to match between TrueNAS and clients, making NFSv4 both easy to setup and secure.  Perfect!
+NFSv4 also supports Kerberos authentication (sec=krb5|krb5i|krb5p). Kerberos is a centralised authentication system that provides single sign-on for many protocols, including NFSv4 and SMB. It's how Windows devices seamlessly authenticate to SMB shares and other services in enterprise Windows environments. With Kerberos, NFSv4 does not require user IDs to match between TrueNAS and clients, making NFSv4 both easy to setup and secure.  Perfect!
 
 TrueNAS doesn't come with a local Kerberos server or one in Apps.  Enterprises use Active Directory or FreeIPA for Kerberos, but they are complex for a small environment.  I wanted something simple for just a few users and computers.
 
@@ -207,11 +207,11 @@ Manage Groups Server-side: checked
 ```
 3. Setup an NFS share as desired.  Under Advanced Options, Kerberos security levels can be configured.  The Kerberos security levels are:
 ```
-KRB5: Kerberos authentication only
-KRB5I: Kerberos authentication with Kerberos integrity (packets cannot be changed in transit but are not encrypted in transit)
-KRB5P: Kerberos authentication with Kerberos encryption (packets cannot be changed in transit and are encrypted in transit)
+krb5: Kerberos authentication only
+krb5i: Kerberos authentication with Kerberos integrity (packets cannot be changed in transit but are not encrypted in transit)
+krb5p: Kerberos authentication with Kerberos encryption and integrity (packets cannot be changed in transit and are encrypted in transit)
 ```
-The Kerberos security level set on the client mount option (sec=krb5|krb5i|krb5p) needs to match an enabled Kerberos security level on TrueNAS.  The default (none selected) is all Kerberos security levels are allowed. sec=sys is disabled by global option "Require Kerberos fo NFSv4".
+The Kerberos security level set on the client mount option (sec=krb5|krb5i|krb5p) needs to match an enabled Kerberos security level on TrueNAS.  The default (none selected) is all Kerberos security levels are allowed. sec=sys is disabled by global option "Require Kerberos fo NFSv4".  krb5p is recommended for NFS over any shared network to provide data encryption and ensure integrity, or otherwise at least krb5i is recommended to provide integrity.
 
 ### Step 6: Configure a Mac client
 1. Create /etc/krb5.conf permissions root:wheel 0644 to contain:
@@ -233,7 +233,7 @@ The Kerberos security level set on the client mount option (sec=krb5|krb5i|krb5p
 2. Update /etc/nfs.conf to use NFSv4.0 and Kerberos authentication by default:
 ```
 nfs.client.default_nfs4domain = myhome.lan
-nfs.client.mount.options = vers=4.0,sec=krb5
+nfs.client.mount.options = vers=4.0,sec=krb5p
 # consider further options such as soft,intr,timeo,retrans based on the environment
 ```
 3. Get the Kerberos Ticket Granting Ticket:
@@ -289,13 +289,13 @@ kinit (no parameters) will kinit for current-linux-user@DEFAULT_REALM which may 
 6. Mount the share:
 ```
 sudo mkdir /run/media/share
-sudo mount -t nfs -o vers=4.2,sec=krb5 mytruenas.myhome.lan:/full/path/to/share /run/media/share
+sudo mount -t nfs -o vers=4.2,sec=krb5p mytruenas.myhome.lan:/full/path/to/share /run/media/share
 ```
 7. The share should be mounted and browseable by the user as per normal.  Note that the share will only be available for users with a Kerberos ticket. The NFS ticket is visible through klist.
 
 8. To mount the share permanently, add an /etc/fstab entry similar to:
 ```
-mytruenas.myhome.lan:/full/path/to/share /run/media/share -o vers=4.2,sec=krb5 0 0
+mytruenas.myhome.lan:/full/path/to/share /run/media/share -o vers=4.2,sec=krb5p 0 0
 ```
 9. After every reboot the user will need to kinit to get a new Kerberos Ticket Granting Ticket.
 
@@ -346,4 +346,4 @@ I hope this will also inspire TrueNAS to include a local Kerberos server in the 
 
 To learn more about Kerberos, TheSecMaster has a very detailed explanation here: https://thesecmaster.com/blog/what-is-kerberos-comprehensive-step-by-step-guide-to-understanding-how-kerberos-authentication-works
 
-Thank you to Gabriel Abdalla Cavalcante for his excellent Kerberos server build scripts, available from his github https://github.com/gcavalcante8808/docker-krb5-server.
+Thank you to Gabriel Abdalla Cavalcante for his excellent Kerberos server build scripts, available from his github https://github.com/gcavalcante8808/docker--server.
