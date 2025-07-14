@@ -107,9 +107,9 @@ services:
       KRB5_REALM: MYHOME.LAN
     ports:
       - '88:88'
-      - 88:88/udp
+      - '88:88/udp'
       - '464:464'
-      - 464:464/udp
+      - '464:464/udp'
     restart: unless-stopped
     volumes:
       - /mnt/path/to/apps/krb5kdc/data:/var/lib/krb5kdc ## update the apps path
